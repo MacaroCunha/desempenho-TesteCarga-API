@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: novo-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sua_senha_root
+      MYSQL_DATABASE: nome_do_banco
+      MYSQL_USER: seu_usuario
+      MYSQL_PASSWORD: sua_senha
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./dados_mysql:/var/lib/mysql
