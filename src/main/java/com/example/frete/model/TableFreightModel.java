@@ -14,15 +14,15 @@ public class TableFreightModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "weight_range")
-    private String weightRange = "";
-    @Column(name = "cep_start")
-    private String cepStart = "";
+    @Column(name = "faixa_peso")
+    private String weightRange;
+    @Column(name = "faixa_cep_inicio")
+    private String cepStart;
 
-    @Column(name = "cep_end")
-    private String cepEnd = "";
+    @Column(name = "faixa_cep_fim")
+    private String cepEnd;
 
-    @Column(name = "tariff")
-    private Double tariff = 0.0;
+    @Column(name = "tarifa")
+    private Double tariff;
 
     }

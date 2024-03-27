@@ -1,9 +1,10 @@
-version: '3'
+version: '3.8'
 
 services:
   mysql:
     image: mysql:latest
-    container_name: novo-mysql
+    container_name: mysqll
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: sua_senha_root
       MYSQL_DATABASE: nome_do_banco

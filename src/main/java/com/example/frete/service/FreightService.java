@@ -32,9 +32,6 @@ public class FreightService {
             }
 
             double freightPrice = calculateFreightPrice(totalWeightKg, request.getAddress().getPostalCode());
-
-            markRequestAsProcessed(request.getAddress().getPostalCode());
-
             return new FreightResponseDto(new String[]{"Processed successfully"}, freightPrice + totalPrice, totalWeightKg);
         } catch (IllegalArgumentException e) {
             return new FreightResponseDto(new String[]{"Error: " + e.getMessage()}, 0.0, 0.0);
@@ -103,16 +100,5 @@ public class FreightService {
         return cepValue >= cepStart && cepValue <= cepEnd;
     }
 
-    private void markRequestAsProcessed(String cep) {
-        List<TableFreightModel> tableFreightList = tableFreightRepository
-                .findAllByCepStartLessThanEqualAndCepEndGreaterThanEqual(cep, cep);
-        for (TableFreightModel tableFreight : tableFreightList) {
-            saveProcessedRequest(tableFreight);
-        }
-    }
-
-    private void saveProcessedRequest(TableFreightModel tableFreight) {
-        tableFreightRepository.save(tableFreight);
-    }
 }
 
