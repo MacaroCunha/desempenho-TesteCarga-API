@@ -11,5 +11,3 @@ services:
       MYSQL_PASSWORD: sua_senha
     ports:
       - "3307:3306"
-    volumes:
-      - ./dados_mysql:/var/lib/mysql

@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
+@Entity(name = "tabela_frete")
 @Getter @Setter
 public class TableFreightModel {
 
@@ -20,6 +20,7 @@ public class TableFreightModel {
     private String cepEnd;
     private Double tariff;
 }
+
 
 
 

@@ -40,15 +40,16 @@ public class FreightServiceImpl {
 
             switch (weightUnit.toLowerCase()) {
                 case "kg":
-                    totalWeightKg += itemWeight;
+                    totalWeightKg += itemWeight * item.getQuantity();
                     break;
                 case "gr":
-                    totalWeightKg += itemWeight / 1000.0;
+                    totalWeightKg += (itemWeight * item.getQuantity()) / 1000.0;
                     break;
                 case "ton":
-                    totalWeightKg += itemWeight * 1000.0;
+                    totalWeightKg += (itemWeight * item.getQuantity()) * 1000.0;
                     break;
             }
+
             totalPrice += item.getUnit_price() * item.getQuantity();
         }
 
@@ -56,7 +57,7 @@ public class FreightServiceImpl {
 
         FreightResponseDto responseDto = new FreightResponseDto();
         responseDto.setMessage("Processed successfully");
-        responseDto.setFinalPrice(freightPrice);
+        responseDto.setFinalPrice(freightPrice + totalPrice);
         responseDto.setTotalWeightKg(totalWeightKg);
 
         return responseDto;
@@ -73,19 +74,18 @@ public class FreightServiceImpl {
     private double calculateFreightPrice(double totalWeightKg, String cep) {
         TableFreightModel tableFreight = tableFreightRepository
                 .findByCepStartLessThanEqualAndCepEndGreaterThanEqual(cep, cep);
-        if (tableFreight != null) {
-            return tableFreight.getTariff();
+        if (tableFreight != null && isCepInRange(cep, tableFreight)) {
+            double finalPrice = tableFreight.getTariff() * totalWeightKg;
+            return finalPrice;
         }
         return 0.0;
     }
+
+    private boolean isCepInRange(String cep, TableFreightModel tableFreight) {
+        int cepStart = Integer.parseInt(tableFreight.getCepStart().replace("-", ""));
+        int cepEnd = Integer.parseInt(tableFreight.getCepEnd().replace("-", ""));
+        int cepValue = Integer.parseInt(cep.replace("-", ""));
+        return cepValue >= cepStart && cepValue <= cepEnd;
+    }
 }
-
-
-
-
-
-
-
-
-
 
