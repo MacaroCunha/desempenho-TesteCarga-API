@@ -1,36 +1,35 @@
 package com.example.frete.controller;
 
-import com.example.frete.dto.AddressDto;
-import com.example.frete.dto.YourRequestClass;
-import com.example.frete.model.FreightResponse;
-import com.example.frete.repository.FreightServiceRepository;
+import com.example.frete.dto.FreightResponseDto;
+import com.example.frete.dto.request.FreightRequestDto;
+import com.example.frete.service.FreightServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/shipping")
 public class FreightController {
 
-    private final FreightServiceRepository freightRepository;
+    private final FreightServiceImpl freightService;
 
     @Autowired
-    public FreightController(FreightServiceRepository freightRepository) {
-        this.freightRepository = freightRepository;
+    public FreightController(FreightServiceImpl freightService) {
+        this.freightService = freightService;
     }
 
-    @GetMapping("/example-get")
-    public ResponseEntity<String> exampleGetMethod() {
-        return new ResponseEntity<>("Example GET method", HttpStatus.OK);
-    }
-
-    @PutMapping("/update-address")
-    public ResponseEntity<String> updateAddress(@RequestBody AddressDto addressDto) {
-        // Update address logic here
-        return new ResponseEntity<>("Address updated successfully", HttpStatus.OK);
+    @PostMapping("/calculate-freight")
+    public ResponseEntity<FreightResponseDto> calculateFreight(@RequestBody FreightRequestDto requestDto) {
+        FreightResponseDto responseDto = freightService.calculateFreight(requestDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }
+
+
 
 
 

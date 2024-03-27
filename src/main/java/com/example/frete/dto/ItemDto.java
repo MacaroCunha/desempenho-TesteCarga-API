@@ -1,17 +1,16 @@
 package com.example.frete.dto;
 
+import lombok.Data;
+
+@Data
 public class ItemDto {
-    private String nome;
-    private int quantidade;
-    private double preco_unitario;
-    private double peso_produto;
-    private String medida_peso;
-
-    public String getWeightUnit() {
-        return null;
-    }
-
-    public double getWeight() {
-        return 0;
-    }
+    private String name;
+    private int quantity;
+    private double unit_price;
+    private double product_weight;
+    private String weight_unit;
 }
+
+
+
+
