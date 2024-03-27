@@ -1,8 +1,8 @@
 package com.example.frete.controller;
 
-import com.example.frete.dto.FreightResponseDto;
+import com.example.frete.dto.response.FreightResponseDto;
 import com.example.frete.dto.request.FreightRequestDto;
-import com.example.frete.service.FreightServiceImpl;
+import com.example.frete.service.FreightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,20 +15,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/shipping")
 public class FreightController {
 
-    private final FreightServiceImpl freightService;
+    private final FreightService freightService;
 
     @Autowired
-    public FreightController(FreightServiceImpl freightService) {
+    public FreightController(FreightService freightService) {
         this.freightService = freightService;
     }
 
     @PostMapping("/calculate-freight")
     public ResponseEntity<FreightResponseDto> calculateFreight(@RequestBody FreightRequestDto requestDto) {
         FreightResponseDto responseDto = freightService.calculateFreight(requestDto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        if (responseDto.getMessage()[0].startsWith("Error")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
+        }
+        return ResponseEntity.ok(responseDto);
     }
 }
-
 
 
 
