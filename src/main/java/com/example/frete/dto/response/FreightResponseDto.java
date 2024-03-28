@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class FreightResponseDto {
-    private String[] Message;
+    private String[] messages;
     private double finalPrice;
     private double totalWeightKg;
 
-    public FreightResponseDto(String[] Message, double finalPrice, double totalWeightKg) {
-        this.Message = Message;
+    public FreightResponseDto(String[] messages, double finalPrice, double totalWeightKg) {
+        this.messages = messages;
         this.finalPrice = finalPrice;
         this.totalWeightKg = totalWeightKg;
     }
