@@ -6,6 +6,8 @@ Você faz parte de uma empresa de logística, responsável por um novo projeto v
 Estrutura do Objeto JSON:
 O endpoint receberá um objeto JSON contendo detalhes dos produtos a serem enviados, incluindo o peso de cada produto. Além disso, você terá acesso a um banco de dados com a tabela de preços de frete, onde poderá buscar as informações necessárias para realizar o cálculo.
 
+// to-do deixar explicito a regra de calculo 
+
 # Stack
 O contribuidor pode fazer em qualquer lang e utilizar qualquer ferramenta que achar necessario para alcancer a melhor performance.
 
