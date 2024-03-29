@@ -25,7 +25,7 @@ public class FreightController {
     @PostMapping("/calculate-freight")
     public ResponseEntity<FreightResponseDto> calculateFreight(@RequestBody FreightRequestDto requestDto) {
         FreightResponseDto responseDto = freightService.calculateFreight(requestDto);
-        if (responseDto.getMessages()[0].startsWith("Error")) {
+        if (responseDto.getMessages().startsWith("Error")) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDto);
         }
         return ResponseEntity.ok(responseDto);

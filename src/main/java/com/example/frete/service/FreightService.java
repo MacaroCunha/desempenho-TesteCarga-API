@@ -4,10 +4,13 @@ import com.example.frete.dto.response.FreightResponseDto;
 import com.example.frete.dto.request.FreightRequestDto;
 import com.example.frete.model.TableFreightModel;
 import com.example.frete.repository.TableFreightRepository;
+import org.hibernate.boot.model.internal.CreateKeySecondPass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class FreightService {
@@ -45,26 +48,26 @@ public class FreightService {
                 throw new IllegalArgumentException("Total weight exceeds 10 tons");
             }
 
-            String cep = request.getAddress().getPostalCode();
-            List<TableFreightModel> tableFreightList = tableFreightRepository
-                    .findAllByCepStartLessThanEqualAndCepEndGreaterThanEqual(cep, cep);
+            String finalPrice = calcularFaixaPeso(totalWeightKg);
 
-            double freightPrice = 0.0;
-            for (TableFreightModel tableFreight : tableFreightList) {
-                int cepStart = Integer.parseInt(tableFreight.getCepStart().replace("-", ""));
-                int cepEnd = Integer.parseInt(tableFreight.getCepEnd().replace("-", ""));
-                int cepValue = Integer.parseInt(cep.replace("-", ""));
-                if (tableFreight.getTariff() != null && cepValue >= cepStart && cepValue <= cepEnd) {
-                    freightPrice = tableFreight.getTariff() * totalWeightKg;
-                    break;
-                }
-            }
+            TableFreightModel finalPriceCalculated = tableFreightRepository.findFinalPrice(request.getAddress().getPostalCode(), finalPrice);
 
-            return new FreightResponseDto(new String[]{"Processed successfully"}, freightPrice + totalPrice, totalWeightKg);
+
+            return new FreightResponseDto("Processed successfully", finalPriceCalculated.getTariff(), totalWeightKg);
         } catch (IllegalArgumentException e) {
-            return new FreightResponseDto(new String[]{"Error: " + e.getMessage()}, 0.0, 0.0);
+            String[] messages = {"Error: " + e.getMessage()};
+            return new FreightResponseDto("Error when process the request.", 0.0, 0.0);
+        }
+    }
+    public static String calcularFaixaPeso(Double pesoTotal) {
+        if (pesoTotal <= 10) {
+            return "0 a 10kg";
+        } else if (pesoTotal <= 100) {
+            return "10 a 100kg";
+        } else if (pesoTotal <= 1000) {
+            return "100kg a 1ton";
+        } else {
+            return "1ton a 10ton";
         }
     }
 }
-
-
